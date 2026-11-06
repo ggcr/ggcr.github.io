@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Eigenfaces: Principal Component Analysis (PCA) on faces. | Cristian Gutiérrez</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <script id="MathJax-script" async
+                src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js">
+        </script>
+    </head>
+
+    <body class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 font-serif text-foreground text-sm sm:text-lg">
+        <div class="mx-auto max-w-3xl flex min-h-screen flex-col justify-between">
+            <div>
+                <nav aria-label="Main navigation" class="flex h-16 shrink-0 items-center justify-between lg:pt-5">
+                    <div>
+                        <a href="/" class="inline-flex items-center pr-1 pt-1 text-lg sm:text-2xl font-bold subpixel-antialiased text-black">@ggcr</a>
+                    </div>
+                    <div class="flex items-center gap-x-2 sm:gap-x-5">
+                        <a href="/" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">home</a>
+                        <a href="/blog/" aria-current="location" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">posts</a>
+                        <a href="/whiteboards/" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">whiteboards</a>
+                    </div>
+                </nav>
+                <div class="mt-6 sm:mt-10">
+                    <h2 class="leading-snug text-lg sm:text-2xl font-semibold text-foreground">
+                        Eigenfaces: Principal Component Analysis (PCA) on faces</h2>
+                    <p class="text-gray-600 text-xs sm:text-sm mt-2 sm:mt-4 opacity-75 italic">
+                    Statistics, Linear Algebra, Eigenvectors, Dimensionality.</p>
+                </div>
+                <div class="mt-3 sm:mt-8 inset-0 flex items-center" aria-hidden="true">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="flex justify-between mt-1 mb-8">
+                    <p class="text-gray-600 text-xs sm:text-sm opacity-75">By <span class="font-semibold text-teal-800">Cristian Gutiérrez</span></p>
+                    <p class="text-gray-600 text-xs sm:text-sm opacity-75">
+                    28th of July, 2023</p>
+                </div>
+                <div class="text-gray-800 space-y-5">
+                    <p>PCA, short for Principal Component Analysis, is a statistical technique that offers the main advantage of reducing the dimensionality of a representation. This is particularly valuable in Machine Learning, as we are aware that dimensionality can quickly become overwhelming (see the <a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">Curse of dimensionality</a>).</p>
+                    <p>This technique can achieve the dimensionality reduction through Eigendecomposition which involves breaking down a matrix \(A\) into a series of Eigenvectors and Eigenvalues. By doing so, we can gain new insights into the object's properties and characteristics.</p>
+                    <p>A fascinating use of Principal Component Analysis is Eigenfaces. This involves employing PCA to decrease the dimensions of a collection of facial images. It can be utilized to search for a match in a vast facial dataset. </p>
+                    <img src="https://github.com/ggcr/eigenfaces-pca/assets/57730982/50b78bd9-3acb-4b90-ae9f-0f541057c734" />
+                    <p>We will make us of the Olivetti faces dataset, created at AT&T Laboratories Cambridge between 1992 and 1994. It contains \(400\) black and white pictures of the faces of 40 distinct subjects of size \(64 \times 64\). Thus, we can now define our matrix of Input data.</p>
+                    $$
+                    A_{400\times4096}
+                    $$
+                    <p>In order to apply the Eigendecomposition, we have the strong requirement for the matrix to be a <strong>real symmetric matrix</strong>, and right now it is not. Because of this, we will make use of the Co-Variance matrix, which we will call \(S\). The Co-Variance will indicate us how the features co-relate to each-other.</p>
+                    $$
+                    B = A - \mu_A,
+                    $$
+                    $$
+                    S = B^T B\,.
+                    $$
+                    <p>Now that we have a real symmetric matrix, we have the certainty that such Eigenvectors and Eigenvalues exist.</p>
+                    $$
+                    \vec{\lambda},\,\vec{V} = \texttt{torch.lineal.eig(}S\texttt{)}\;,
+                    $$
+                    <p>Note that, the \(\texttt{PyTorch}\) library already sorted the Eigenvectors by the quantity of information retrieved in the Eigenvalues, and we can do a first analysis of the situation by calculing the Total Variance of the dataset \(T\), and how much of the total variance is represented in each of the Principal Components. The first Principal Component represents a 23.81% of the total information.</p>
+                    $$
+                    T=Tr(\vec{\lambda})=79.11\;,\quad \frac{\vec{\lambda_1}}{T} = 23.81\%\;,
+                    $$
+                    <p>Now we will keep the first \(k\) Principal Components and we will perform the PCA reconstruction by building our Projection matrices \(P\).</p>
+                    $$
+                    Z = \vec{V}(:\,,\,:\!k)\;,
+                    $$
+                    $$
+                    P = B Z Z^{T}\;.
+                    $$
+                    <p>With all of this, we have a framework in which given the Co-variance matrix of the dataset, we can express each picture in terms of the principal eigenvectors and re-construct the image. As you can see in the last case: we can use a 25% of the information without barely loosing any quality.</p>
+                    <p class="font-semibold pt-10">Code</p>
+                    <p>Available at <a href="https://github.com/ggcr/Eigenfaces-PCA" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">github.com/ggcr/Eigenfaces-PCA</a>.</p>
+                    <script src="https://gist.github.com/ggcr/b0316b4c218488559088faf0053911e6.js"></script>
+                    <p class="font-semibold pt-10">References</p>
+                    <ul class="ml-2 list-outside">
+                        <li class="my-2">
+                            <a href="https://www.math.union.edu/~jaureguj/PCA.pdf" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                Principal component analysis with linear algebra</a>, Jeff Jauregui (2012)
+                        </li>
+                    </ul>
+
+
+                </div>
+                <footer class="mt-16 flex items-center justify-between gap-4 pb-8 sm:mt-20 sm:pb-10">
+                    <div><p class="text-gray-600">Cristian Gutiérrez @ 2026</p></div>
+                    <div class="flex items-center gap-4">
+                        <a href="mailto:ggcristian@icloud.com" class="inline-flex" aria-label="Email Cristian">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9D9D9D" class="w-5 h-5">
+                                <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                                <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ggcr/" target="_blank" rel="noopener noreferrer" class="inline-flex" aria-label="LinkedIn">
+                            <img class="h-4 w-4 object-contain" src="/linkedin.png" alt="LinkedIn">
+                        </a>
+                        <a href="https://github.com/ggcr" target="_blank" rel="noopener noreferrer" class="inline-flex" aria-label="GitHub">
+                            <img class="h-5 w-5 object-contain" src="/github.png" alt="GitHub">
+                        </a>
+                    </div>
+                </footer>
+            </div>
+    </body>
+
+</html>
+

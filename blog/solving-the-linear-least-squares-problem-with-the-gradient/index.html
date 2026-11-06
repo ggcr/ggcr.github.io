@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Solving the Linear Least Squares problem with the Gradient | Cristian Gutiérrez</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <script id="MathJax-script" async
+                src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js">
+        </script>
+    </head>
+
+    <body class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 font-serif text-foreground text-sm sm:text-lg">
+        <div class="mx-auto max-w-3xl flex min-h-screen flex-col justify-between">
+            <div>
+                <nav aria-label="Main navigation" class="flex h-16 shrink-0 items-center justify-between lg:pt-5">
+                    <div>
+                        <a href="/" class="inline-flex items-center pr-1 pt-1 text-lg sm:text-2xl font-bold subpixel-antialiased text-black">@ggcr</a>
+                    </div>
+                    <div class="flex items-center gap-x-2 sm:gap-x-5">
+                        <a href="/" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">home</a>
+                        <a href="/blog/" aria-current="location" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">posts</a>
+                        <a href="/whiteboards/" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">whiteboards</a>
+                    </div>
+                </nav>
+                <div class="mt-6 sm:mt-10">
+                    <h2 class="leading-snug text-lg sm:text-2xl font-semibold text-foreground">
+                        Solving the Linear Least Squares problem with the Gradient</h2>
+                    <p class="text-gray-600 text-xs sm:text-sm mt-2 sm:mt-4 opacity-75 italic">
+                    Optimization, Gradient Descent, Linear Algebra.</p>
+                </div>
+                <div class="mt-3 sm:mt-8 inset-0 flex items-center" aria-hidden="true">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="flex justify-between mt-1 mb-8">
+                    <p class="text-gray-600 text-xs sm:text-sm opacity-75">By <span class="font-semibold text-teal-800">Cristian Gutiérrez</span></p>
+                    <p class="text-gray-600 text-xs sm:text-sm opacity-75">
+                    3rd of August, 2023</p>
+                </div>
+                <div class="text-gray-800 space-y-5">
+                    <p>The least squares method is a mathematical procedure for finding the best-fitting curve to a given set of points by minimizing the sum of the squares of the offsets, the residuals, of the points from the curve. The sum of the squares of the offsets is used instead of the offset absolute values because this allows the residuals to be treated as a continuous differentiable quantity.</p>
+
+                    <p>We need to find the value of \(x\) that minimizes</p>
+                    $$
+                    f(x) = \frac{1}{2} ||Ax - b||_{2}^{2}\,.
+                    $$
+                    <p>where \(A\) is a matrix, \(x\) is our input vector and \(b\) is a vector of labels.</p>
+
+                    <p>From the squared \(L^2\) norm and because \(Ax + b\) must be a vector, we can expand further on. Furthermore, consider that \(A^TB^T = (BA)^T\).</p>
+                    $$
+                    f(x) = \frac{1}{2} \bigl(Ax - b \bigr)^T\bigl(Ax - b \bigr)=
+                    $$
+                    $$
+                    = \frac{1}{2} \bigl( x^TA^T - b^T \bigr)\bigl(Ax - b \bigr)=
+                    $$
+                    $$
+                    = \frac{1}{2} \bigl(x^TA^TAx - x^TA^Tb - b^TAx + b^Tb\bigr)\,.
+                    $$
+                    <p>Also consider that we can swap the terms of a dot product \(A^TB=AB^T\).</p>
+
+                    <p>In order to minimize the function for \(x\) we shall compute the gradient to see towards which direction should we move. Remember that the gradient points to the highest slope, thus, by moving towards the opposite direction of the gradient we will be able to minimize for \(x\) in an optimal way:</p>
+                    $$
+                    \triangledown_x f(x) = \frac{\partial}{\partial x}\frac{1}{2} \bigl(x^TA^TAx - x^TA^Tb - b^TAx + b^Tb\bigr)=0\,,
+                    $$
+                    <p>In order to be able to differentiate matrix and vectors operations, we write them as sums and then apply normal scalar differentiation.</p>
+                    <p>We will use two rules, or known partial derivatives, that will come handy later on:</p>
+                    <ul class="ml-2 list-outside list-disc">
+                        <li class="ml-4">
+                            <span class="text-teal-800">Rule 1.</span> The difference of the dot product between two vectors, one being the transpose of our input will be equal to the other exponent.
+                            $$
+                            \frac{\partial}{\partial x}\,x^Ty = \sum_j x_j y_j = y_j\,.
+                            $$
+                        </li>
+                        <li class="ml-4">
+                            <span class="text-teal-800">Rule 2.</span> When we have a dot product between a matrix and a vector, both in its transposed mode and its normal mode.
+                            $$
+                            \frac{\partial}{\partial x}\,x^TAx\rightarrow \frac{\partial}{\partial x} \sum_k x_k A_{jk} + \sum_j A_{ij} x_j \, = Ax + A^Tx\,.
+                            $$
+                        </li>
+                    </ul>
+
+                    <p>Now we can proceed to evaluate our gradient in which we will divide in the 4 terms inside the inner function:</p>
+
+                    <ul class="ml-2 list-outside list-disc">
+                        <li class="ml-4">
+                            <span class="text-teal-800">Term 1.</span> We apply the second rule for \(x^TAx\) in which our \(A\) will be \(A^TA\).
+                            $$
+                            \frac{\partial}{\partial x}\,x^TA^TAx = 2A^TAx\,.
+                            $$
+                        </li>
+                        <li class="ml-4">
+                            <span class="text-teal-800">Term 2.</span> We apply the first rule for \(x^Ty\) in which our \(y\) will be \(A^Tb\).
+                            $$
+                            \frac{\partial}{\partial x}\,x^TA^Tb = A^Tb\,.
+                            $$
+
+                        </li>
+                        <li class="ml-4">
+                            <span class="text-teal-800">Term 3.</span> We apply the first rule for \(x^Ty\) in which our \(y\) will be \(A^Tb\).
+                            <p class="pt-2">Note that here we will perform some manipulations to put it easy, from The Matrix Cookbook, we have that:</p>
+                            $$
+                            (A^TB^TC^T) = (CBA)^T\,,
+                            $$
+                            <p>Furthermore, \(b^TAx\) will result in a matrix of dimensions \(1\times 1\), a scalar, and because it is a scalar we know for a fact that the transpose won't have effect, hence:</p>
+                            $$
+                            b^TAx = (x^TA^Tb)^T = x^TA^Tb\,.
+                            $$
+                            <p>We can now differentiate our third term:</p>
+                            $$
+                            \frac{\partial}{\partial x}\, b^TAx = \frac{\partial}{\partial x}\,(x^TA^Tb)^T = \frac{\partial}{\partial x}\,x^TA^Tb = A^Tb\,.
+                            $$
+
+                        </li>
+                        <li class="ml-4">
+                            <span class="text-teal-800">Term 4.</span> Our last term is composed by \(b\) and we consider them constanst, therefore:
+                            $$
+                            \frac{\partial}{\partial x}\,b^Tb= 0\,.
+                            $$
+
+                        </li>
+                    </ul>
+
+                    And finally we can calculate the gradient function for our Linear Least Squares problem:
+                    $$
+                    \triangledown_x\; \frac{1}{2}\;\bigl(2A^TAx - A^Tb - A^Tb + 0\bigr)\,,
+                    $$
+                    $$
+                    \triangledown_x\; \frac{1}{2}\;\bigl(2A^TAx - 2A^Tb - A^Tb\bigr)\,,
+                    $$
+                    $$
+                    \triangledown_x\; A^TAx - A^Tb\,.
+                    $$
+                    <p class="font-semibold pt-10">References</p>
+                            <ul class="ml-2 list-outside">
+                                <li class="my-2">
+                                    <a href="https://www.deeplearningbook.org/" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        Deep Learning Book</a>, Ian Goodfellow and Yoshua Bengio and Aaron Courville (2016)
+                                </li>
+                                <li class="my-2">
+                                    <a href="https://web.stanford.edu/class/cs224n/readings/review-differential-calculus.pdf" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        Differential Calculus Theory</a>, CS224N, Stanford (2022)
+                                </li>
+                            </ul>
+                </div>
+                <footer class="mt-16 flex items-center justify-between gap-4 pb-8 sm:mt-20 sm:pb-10">
+                    <div><p class="text-gray-600">Cristian Gutiérrez @ 2026</p></div>
+                    <div class="flex items-center gap-4">
+                        <a href="mailto:ggcristian@icloud.com" class="inline-flex" aria-label="Email Cristian">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9D9D9D" class="w-5 h-5">
+                                <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                                <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ggcr/" target="_blank" rel="noopener noreferrer" class="inline-flex" aria-label="LinkedIn">
+                            <img class="h-4 w-4 object-contain" src="/linkedin.png" alt="LinkedIn">
+                        </a>
+                        <a href="https://github.com/ggcr" target="_blank" rel="noopener noreferrer" class="inline-flex" aria-label="GitHub">
+                            <img class="h-5 w-5 object-contain" src="/github.png" alt="GitHub">
+                        </a>
+                    </div>
+                </footer>
+            </div>
+    </body>
+
+</html>
+

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+
+# Local machine metadata and private configuration
+.DS_Store
+.env
+.env.*
+!.env.example

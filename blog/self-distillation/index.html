@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Self-Distillation, briefly | Cristian Gutiérrez</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <meta name="description" content="Existing post-training methods, KL-Divergence, self-distillation, and fine-grained credit assignment.">
+        <script id="MathJax-script" async
+                src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js">
+        </script>
+    </head>
+
+    <body class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 font-serif text-foreground text-sm sm:text-lg">
+        <div class="mx-auto max-w-3xl flex min-h-screen flex-col justify-between">
+            <div>
+                <nav aria-label="Main navigation" class="flex h-16 shrink-0 items-center justify-between lg:pt-5">
+                    <div>
+                        <a href="/" class="inline-flex items-center pr-1 pt-1 text-lg sm:text-2xl font-bold subpixel-antialiased text-black">@ggcr</a>
+                    </div>
+                    <div class="flex items-center gap-x-2 sm:gap-x-5">
+                        <a href="/" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">home</a>
+                        <a href="/blog/" aria-current="location" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">posts</a>
+                        <a href="/whiteboards/" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">whiteboards</a>
+                    </div>
+                </nav>
+                <main class="min-w-0">
+                    <article>
+                        <header class="mt-6 sm:mt-10">
+                            <h1 class="leading-snug text-lg sm:text-2xl font-semibold text-foreground">Self-Distillation, briefly</h1>
+                            <p class="text-gray-600 text-xs sm:text-sm mt-2 sm:mt-4 opacity-75 italic">Post-Training, KL-Divergence, Self-Distillation, Credit Assignment.</p>
+                            <div class="mt-4 border-t border-gray-300 pt-2 flex justify-between gap-4 text-gray-600 text-xs sm:text-sm">
+                                <p>By <span class="font-semibold text-teal-800">Cristian Gutiérrez</span></p>
+                                <time datetime="2026-10-29">29th of October, 2026</time>
+                            </div>
+                        </header>
+                        <div id="post-content" class="mt-8 text-gray-800 space-y-5 leading-relaxed">
+<p>From &quot;On-Policy Self-Distillation for Large Language Models&quot;, Zhao (ICML 2026)</p>
+<figure><a href="/blog/self-distillation/post-training-methods.png" aria-label="View full-size diagram: Overview of SFT, RLVR, and off-policy and on-policy knowledge distillation"><img src="/blog/self-distillation/post-training-methods.png" alt="Overview of SFT, RLVR, and off-policy and on-policy knowledge distillation" loading="lazy" class="h-auto w-full rounded"></a></figure>
+<aside class="space-y-3 border-l-2 border-teal-500 bg-teal-50 p-4"><p class="font-semibold">KL Divergence</p><p>Measures similarity (not distance) between probability distributions.</p></aside>
+<p>For discrete probability distributions:</p>
+<div class="min-w-0 overflow-x-auto">$$
+D_{KL}(P\mid\mid Q)=\sum_i P(i) \log \frac{P(i)}{Q(i)}
+$$</div>
+<p>For continuous probability distributions:</p>
+<div class="min-w-0 overflow-x-auto">$$
+D_{KL}(P\mid \mid Q)=\int P(x) \log \frac{P(x)}{Q(x)} \, dx
+$$</div>
+<p>Notice that it is not a distance per sé:</p>
+<div class="min-w-0 overflow-x-auto">$$
+D_{KL}(P || Q) \neq D_{KL}(Q||P)
+$$</div>
+<p>In the case of On-Policy Distillation, our probability distribution consists of the next tokens probs over all the next token ids over the vocabulary.</p>
+<div class="min-w-0 overflow-x-auto">$$
+D_{KL}(P\mid\mid Q)=\sum_{i=0}^{248,320} P(i) \log \frac{P(i)}{Q(i)} \qquad \text{where } i \text{ is a next-token id}
+$$</div>
+<p>Notice how each token in our sequence \([1, N]\) will have a prefix, hence, we will start with the next token 1, then the next token 2 (which is conditioned by the previous prefill)…</p>
+<p>In self-distillation we do on-policy distillation, but using the model itself with extra context (or <strong>hints</strong>) as target.</p>
+<div class="min-w-0 overflow-x-auto">$$
+\mathcal{L}(\theta) = D_{KL}(\pi_\theta \mid\mid \pi_{\text{teacher}})
+$$</div>
+<aside class="space-y-3 border-l-2 border-rose-500 bg-rose-50 p-4"><p class="font-semibold">Comment</p><p>IMO giving this hint or context to the teacher is the tricky part without a systematic methodology yet. Guiding the teacher towards giving useful feedback remains pretty much an open problem.</p></aside>
+<p>Self-Distillation can be modeled as the classical RL of a policy gradient with token-level advantages.</p>
+<p>Make \(\pi_\theta(\cdot \mid x)\) match the improved (conditioned) teacher \(\pi_\theta(\cdot \mid x, f)\).</p>
+<div class="min-w-0 overflow-x-auto">$$
+\text{Minimize} \quad \mathcal{L}_{\text{SDPO}}(\theta) := \frac{1}{|y|} \sum_{i=1}^{|y|} \text{KL}\big(\underbrace{\pi_\theta(\cdot \mid x, y_{&lt;i})}_{\text{student}} \,\|\, \underbrace{\pi_\theta(\cdot \mid x, f, y_{&lt;i})}_{\text{teacher}}\big)
+$$</div>
+<div class="min-w-0 overflow-x-auto">$$
+\text{Maximize} \quad A_i(x, y, f) := \log \frac{\overbrace{\pi_\theta(y_i \mid x, f, y_{&lt;i})}^{\text{teacher}}}{\underbrace{\pi_\theta(y_i \mid x, y_{&lt;i})}_{\text{student}}}
+$$</div>
+<aside class="space-y-3 border-l-2 border-teal-500 bg-teal-50 p-4"><p>Notice we maximize because we swapped \(q\) and \(p\):</p>
+<div class="min-w-0 overflow-x-auto">$$
+\log{\frac{p}{q}} \equiv  - \log{\frac{q}{p}} 
+$$</div></aside>
+<p>Suppose we have an input prompt asking our student to write a Python function to return all numbers between <code class="rounded bg-gray-100 px-1 font-mono text-sm">1</code> and <code class="rounded bg-gray-100 px-1 font-mono text-sm">n</code>.</p>
+<p>The student incorrectly returns \([1, n]\) instead of \([1, n)\).</p>
+<p>Then we can condition the teacher, walk the same trajectory and minimize the KL divergence at token-level.</p>
+<figure><a href="/blog/self-distillation/feedback-conditioned-teacher.png" aria-label="View full-size diagram: Python range example with feedback and credit assignment by the self-teacher"><img src="/blog/self-distillation/feedback-conditioned-teacher.png" alt="Python range example with feedback and credit assignment by the self-teacher" loading="lazy" class="h-auto w-full rounded"></a></figure>
+<p>Notice how with distillation, instead of penalizing the whole trajectory (sparse reward problem in RLVR) we would be just penalizing at a more fine-grained level:</p>
+<figure><a href="/blog/self-distillation/token-level-credit-assignment.png" aria-label="View full-size diagram: Fine-grained token-level credit assignment compared with trajectory-level rewards"><img src="/blog/self-distillation/token-level-credit-assignment.png" alt="Fine-grained token-level credit assignment compared with trajectory-level rewards" loading="lazy" class="h-auto w-full rounded"></a></figure>
+<p>And not only that, but we would be penalizing the log-probs of other possible tokens:</p>
+<figure><a href="/blog/self-distillation/next-token-probabilities.png" aria-label="View full-size diagram: Distillation feedback across the probabilities of alternative next tokens"><img src="/blog/self-distillation/next-token-probabilities.png" alt="Distillation feedback across the probabilities of alternative next tokens" loading="lazy" class="h-auto w-full rounded"></a></figure>
+<section aria-labelledby="references" class="pt-8"><h2 id="references" class="text-lg font-semibold sm:text-xl">References</h2><ul class="mt-5 ml-5 list-disc space-y-4"><li><a href="https://arxiv.org/abs/2601.18734" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">Self-Distilled Reasoner: On-Policy Self-Distillation for Large Language Models</a>, Siyan Zhao et al. (2026).</li><li><a href="https://arxiv.org/abs/2601.20802" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">Reinforcement Learning via Self-Distillation</a>, Jonas Hübotter et al. (2026).</li><li><a href="https://youtu.be/O2OlL2Wp48A" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">Self-Distillation: A New Way to Teach and Align AI Models</a>, Andreas Krause, ETH Zürich (talk).</li><li><a href="https://thinkingmachines.ai/blog/on-policy-distillation/" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">On-Policy Distillation</a>, Kevin Lu and Thinking Machines Lab (2025).</li></ul></section>
+                        </div>
+                    </article>
+                </main>
+                <footer class="mt-16 flex items-center justify-between gap-4 pb-8 sm:mt-20 sm:pb-10">
+                    <div><p class="text-gray-600">Cristian Gutiérrez @ 2026</p></div>
+                    <div class="flex items-center gap-4">
+                        <a href="mailto:ggcristian@icloud.com" class="inline-flex" aria-label="Email Cristian">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9D9D9D" class="w-5 h-5">
+                                <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                                <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ggcr/" target="_blank" rel="noopener noreferrer" class="inline-flex" aria-label="LinkedIn">
+                            <img class="h-4 w-4 object-contain" src="/linkedin.png" alt="LinkedIn">
+                        </a>
+                        <a href="https://github.com/ggcr" target="_blank" rel="noopener noreferrer" class="inline-flex" aria-label="GitHub">
+                            <img class="h-5 w-5 object-contain" src="/github.png" alt="GitHub">
+                        </a>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </body>
+</html>

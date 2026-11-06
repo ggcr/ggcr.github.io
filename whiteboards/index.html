@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Whiteboards | Cristian Gutiérrez</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    </head>
+
+    <body class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 font-serif text-foreground text-sm sm:text-lg">
+        <div class="mx-auto max-w-3xl flex min-h-screen flex-col justify-between">
+            <div>
+                <nav aria-label="Main navigation" class="flex h-16 shrink-0 items-center justify-between lg:pt-5">
+                    <div>
+                        <a href="/" class="inline-flex items-center pr-1 pt-1 text-lg sm:text-2xl font-bold subpixel-antialiased text-black">@ggcr</a>
+                    </div>
+                    <div class="flex items-center gap-x-2 sm:gap-x-5">
+                        <a href="/" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">home</a>
+                        <a href="/blog/" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">posts</a>
+                        <a href="/whiteboards/" aria-current="page" class="no-underline hover:underline inline-flex items-center px-1 pt-1 antialiased font-medium tracking-tight text-gray-700 hover:text-gray-900">whiteboards</a>
+                    </div>
+                </nav>
+                <div class="mt-10">
+                    <section class="my-12">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#10</span>
+                            Finite State Machine for basic XML parsing</p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">
+                            6th December, 2025
+                            </p>
+                        </div>
+                        <img src="/whiteboards/FSM-XML.svg" class="h-auto w-full" loading="lazy" />
+                    </section>
+                    <section class="mt-20">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#9</span>
+                            Image Denoising problem using Gateaux Derivative</p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">
+                            4th November, 2023
+                            </p>
+                        </div>
+                        <picture>
+                            <source srcset="/whiteboards/gateaux.webp" type="image/webp">
+                            <img src="/whiteboards/gateaux.jpg" class="h-auto w-full" loading="lazy" />
+                        </picture>
+                        <div class="pt-1">
+                            <ul class="ml-2 list-outside opacity-75">
+                                <li class="my-2">
+                                    <a href="https://cvg.cit.tum.de/_media/teaching/ws2019/cvvm_ws19/material/variational_methods3.pdf" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        TUM: Variational Calculus (Chapter 3), Lecture Notes</a>, Prof. Daniel Cremers (2019)<br/>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="mt-20">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#8</span>
+                            Linear Least Squares with the directional derivative</p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">
+                            1st November, 2023
+                            </p>
+                        </div>
+                        <picture>
+                            <source srcset="/whiteboards/Linear_directional.webp" type="image/webp">
+                            <img src="/whiteboards/Linear_directional.jpg" class="h-auto w-full" loading="lazy" />
+                        </picture>
+                        <div class="pt-1">
+                            <ul class="ml-2 list-outside opacity-75">
+                                <li class="my-2">
+                                    <a href="https://web.stanford.edu/~boyd/cvxbook/" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        Convex Optimization, Textbook</a>, Stephen P. Boyd & Lieven Vandenberghe<br/>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="mt-20">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#7</span>
+                            MNIST Neural Net with Backpropagation from scratch</p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">
+                            28th September, 2023
+                            </p>
+                        </div>
+                        <picture>
+                            <source srcset="/whiteboards/backprop.webp" type="image/webp">
+                            <img src="/whiteboards/backprop.jpg" class="h-auto w-full" loading="lazy" />
+                        </picture>
+                        <div class="pt-1">
+                            <ul class="ml-2 list-outside opacity-75">
+                                <li class="my-2">
+                                    <a href="https://cs231n.github.io/optimization-2/" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        CS231n Lecture Notes</a>, Andrej Karpathy, Li Fei-Fei (2016)<br/>
+                                    <a href="https://cs229.stanford.edu/main_notes.pdf" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        CS229 Lecture Notes</a>, Andrew Ng and Tengyu Ma (2023)
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="mt-20">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#6</span>
+                            Gaussian Discriminative Analysis (GDA)</p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">
+                            19th August, 2023
+                            </p>
+                        </div>
+                        <picture>
+                            <source srcset="/whiteboards/gda.webp" type="image/webp">
+                            <img src="/whiteboards/gda.jpg" class="h-auto w-full" loading="lazy" />
+                        </picture>
+                        <div class="pt-1">
+                            <ul class="ml-2 list-outside opacity-75">
+                                <li class="my-2">
+                                    <a href="https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        STAT 260: Bayesian Modeling and Inference (Chapter 13)</a>,  Michael I. Jordan (2010)<br/>
+                                    <a href="https://cs229.stanford.edu/main_notes.pdf" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        CS229 Lecture Notes</a>, Andrew Ng and Tengyu Ma (2023)
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="mt-20">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#5</span>
+                            Maximizing the Log Likelihood Estimator in Logistic Regression</p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">
+                            15th August, 2023
+                            </p>
+                        </div>
+                        <picture>
+                            <source srcset="/whiteboards/logistic.webp" type="image/webp">
+                            <img src="/whiteboards/logistic.jpg" class="h-auto w-full" loading="lazy" />
+                        </picture>
+                        <div class="pt-1">
+                            <ul class="ml-2 list-outside opacity-75">
+                                <li class="my-2">
+                                    <a href="https://cs229.stanford.edu/main_notes.pdf" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        CS229 Lecture Notes</a>, Andrew Ng and Tengyu Ma (2023)
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="mt-20">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#4</span>
+                            Solving the Linear Mean Squares problem on Linear Regression</p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">
+                            13th August, 2023
+                            </p>
+                        </div>
+                        <picture>
+                            <source srcset="/whiteboards/lms.webp" type="image/webp">
+                            <img src="/whiteboards/lms.jpg" class="h-auto w-full" loading="lazy" />
+                        </picture>
+                        <div class="pt-1">
+                            <ul class="ml-2 list-outside opacity-75">
+                                <li class="my-2">
+                                    <a href="https://cs229.stanford.edu/main_notes.pdf" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        CS229 Lecture Notes</a>, Andrew Ng and Tengyu Ma (2023)
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="mt-20">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#3</span>
+                            Support Vectors Machines from the ground up
+                            </p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">
+                            9th August, 2023
+                            </p>
+                        </div>
+                        <picture>
+                            <source srcset="/whiteboards/svm.webp" type="image/webp">
+                            <img src="/whiteboards/svm.jpg" class="h-auto w-full" loading="lazy" />
+                        </picture>
+                        <div class="pt-1">
+                            <ul class="ml-2 list-outside opacity-75">
+                                <li class="my-2">
+                                    <a href="https://youtu.be/_PwhiWxHK8o" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        MIT 6.034 - Artificial Intelligence. Lecture 16: Learning: Support Vector Machines</a>, Patrick H. Winston (2010)
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="mt-20">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#2</span>
+                            Solving the Least Squares problem on Linear Regression</p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">3rd August, 2023</p>
+                        </div>
+                        <picture>
+                            <source srcset="/whiteboards/regression.webp" type="image/webp">
+                            <img src="/whiteboards/regression.jpg" class="h-auto w-full" loading="lazy" />
+                        </picture>
+                        <script src="https://gist.github.com/ggcr/39c1a9003ea923ed7dc0b9959853a8d2.js"></script>
+                        <div class="pt-1">
+                            <ul class="ml-2 list-outside opacity-75">
+                                <li class="my-2">
+                                    <a href="https://probml.github.io/pml-book/book1.html" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">Probabilistic Machine Learning: An Introduction</a>, Kevin P. Murphy (2022)
+                                </li>
+                                <li class="my-2">
+                                    <a href="https://mlpr.inf.ed.ac.uk/2022/notes/w3b_regression_gradients.html" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">MLPR 2022: Regression and Gradients (Notes)</a>, University of Edinburgh (2022)
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="mt-20">
+                        <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                            <p class="text-base sm:text-xl subpixel-antialiased text-foreground">
+                            <span class="text-teal-800 pr-1">#1</span>
+                            Solving the Gradient with the Normal Equations
+                            </p>
+                            <p class="shrink-0 whitespace-nowrap text-xs text-gray-500 sm:text-sm">
+                            28th July, 2023
+                            </p>
+                        </div>
+                        <picture>
+                            <source srcset="/whiteboards/gradient.webp" type="image/webp">
+                            <img src="/whiteboards/gradient.jpg" class="h-auto w-full" loading="lazy" />
+                        </picture>
+                        <div class="pt-1">
+                            <ul class="ml-2 list-outside opacity-75">
+                                <li class="my-2">
+                                    <a href="https://www.deeplearningbook.org/" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        Deep Learning Book</a>, Ian Goodfellow and Yoshua Bengio and Aaron Courville (2016)
+                                </li>
+                                <li class="my-2">
+                                    <a href="https://web.stanford.edu/class/cs224n/readings/review-differential-calculus.pdf" target="_blank" rel="noopener noreferrer" class="transition underline decoration-teal-500 hover:decoration-gray-500 decoration-1 sm:decoration-2 underline-offset-2">
+                                        Differential Calculus Theory</a>, CS224N, Stanford (2022)
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+            <footer class="mt-16 flex items-center justify-between gap-4 pb-8 sm:mt-20 sm:pb-10">
+                <div><p class="text-gray-600">Cristian Gutiérrez @ 2026</p></div>
+                <div class="flex items-center gap-4">
+                    <a href="mailto:ggcristian@icloud.com" class="inline-flex" aria-label="Email Cristian">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#9D9D9D" class="w-5 h-5">
+                            <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                            <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ggcr/" target="_blank" rel="noopener noreferrer" class="inline-flex" aria-label="LinkedIn">
+                        <img class="h-4 w-4 object-contain" src="/linkedin.png" alt="LinkedIn">
+                    </a>
+                    <a href="https://github.com/ggcr" target="_blank" rel="noopener noreferrer" class="inline-flex" aria-label="GitHub">
+                        <img class="h-5 w-5 object-contain" src="/github.png" alt="GitHub">
+                    </a>
+                </div>
+            </footer>
+        </div>
+    </body>
+
+</html>
+
